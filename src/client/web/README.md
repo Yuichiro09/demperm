@@ -12,33 +12,25 @@ npm run dev   # http://localhost:5173
 
 > `npm run build` déclenche `tsc` puis `vite build`. Aucun paquet global requis.
 
-## Structure
+## Structure guidée
 
-```
-src/
-  components/
-    ui/          # Atomes Tailwind (Button, Input, Card, Tabs, Modal, Toast, EmptyState, Skeleton, Avatar)
-    composite/   # Organismes alignés sur les maquettes (ProfileHeader, ProfileBio, SidebarList, etc.)
-    layout/      # AppShell + navigation
-  data/mockData.ts   # Types + mocks servant de contrat avec le futur backend
-  pages/             # ProfileSelf, ProfilePublic, VoteDashboard, ForumHome, Messages
-  App.tsx / main.tsx # Routing (React Router)
-```
+Du général vers le spécifique :
 
-Chaque composant composite expose des props décrivant les besoins data du backend. Exemple :
+1. **`main.tsx`** – point d’entrée React. Monte `App` dans `#root` et place le router.
+2. **`App.tsx`** – déclare les routes (profil perso/public, vote, forum, messagerie) et enveloppe le tout dans l’`AppShell`.
+3. **`components/layout/AppShell.tsx`** – layout commun : header “Demperm”, navigation principale.
+4. **`pages/`**
+   - `ProfileSelf.tsx` – profil personnel entièrement éditable (bio, mandats, préférences, infos, messagerie). Gère la modale “Ajouter un mandat”.
+   - `ProfilePublic.tsx` – même présentation en lecture seule (public : mandats, bio, posts placeholder, infos limitées à prénom/nom/pseudo).
+   - `VoteDashboard.tsx` – tableau de bord (liste d’élections, colonnes de graphiques mockés, résumé de voix).
+   - `ForumHome.tsx` – barre de recherche, listes de communautés, flux de posts.
+   - `Messages.tsx` – liste de conversations à gauche, bulles (cyan/mine) et champ “Envoyer”.
+5. **`components/composite/`** – organismes utilisés par les pages :
+   - `ProfileHeader` (avatar + stats + CTA), `ProfileBio`, `PreferencesPanel`, `InfoCard`, `SidebarList`, `VoteCard`, `MessageBubble`.
+6. **`components/ui/`** – atomes Tailwind mutualisés : `Button`, `Input`, `Card`, `Avatar`, `Tabs`, `Modal`, `Toast`, `EmptyState`, `Skeleton`.
+7. **`data/mockData.ts`** – contrats TypeScript (`Membership`, `Preference`, `Message`, etc.) + valeurs fictives partagées.
 
-```ts
-export interface ProfileHeaderProps {
-  fullName: string
-  role: string
-  location: string
-  avatarUrl?: string
-  stats?: { label: string; value: string }[]
-  editable?: boolean
-}
-```
-
-Ces interfaces peuvent être directement alimentées par les appels API ultérieurs.
+Chaque fichier TSX commence par un commentaire descriptif pour rappeler son rôle. Les composites exposent des props simples qui pourront être reliées aux API (ex. `ProfileHeaderProps` pour hydrater l’entête).
 
 ## Pages livrées
 
