@@ -1,3 +1,4 @@
+// Page profil personnel : édition inline de la bio, des infos et des mandats.
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react'
 import { InfoField, Membership, profileSelf, Preference, ProfileInfoItem } from '../data/mockData'
 import { ProfileHeader } from '../components/composite/ProfileHeader'
@@ -64,8 +65,31 @@ export function ProfileSelf() {
     setIsEditing((prev) => !prev)
   }
 
+  function addMembership() {
+    if (!newMembership.title.trim() || !newMembership.start.trim()) {
+      return
+    }
+    setMemberships((prev) => [
+      ...prev,
+      { id: `membership-${Date.now()}`, title: newMembership.title, start: newMembership.start, end: newMembership.end }
+    ])
+    setNewMembership({ title: '', start: '', end: '' })
+  }
+
+  function handleMembershipModalSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    addMembership()
+    setMembershipModalOpen(false)
+  }
+
+  const openMembershipModal = useCallback(() => {
+    setNewMembership({ title: '', start: '', end: '' })
+    setMembershipModalOpen(true)
+  }, [])
+
   return (
     <div className="space-y-6">
+      {/* En-tête : présente les infos principales + gestion du mode édition / avatar */}
       <ProfileHeader
         fullName={profile.fullName}
         role={profile.role}
@@ -80,6 +104,7 @@ export function ProfileSelf() {
       />
 
       <div className="grid gap-6 md:grid-cols-12">
+        {/* Colonne gauche : mandats historiques accessibles uniquement en lecture + ajout via modal */}
         <div className="space-y-6 md:col-span-3">
           <Card>
             <CardHeader>
@@ -114,6 +139,7 @@ export function ProfileSelf() {
           </Card>
         </div>
 
+        {/* Colonne centrale : bio editable et placeholder Posts */}
         <div className="space-y-6 md:col-span-6">
           {/* La bio devient éditable uniquement entre l'ouverture et la validation du mode édition. */}
           <ProfileBio
@@ -135,6 +161,7 @@ export function ProfileSelf() {
           </Card>
         </div>
 
+        {/* Colonne droite : préférences dynamiques (mode édition) + infos personnelles */}
         <div className="space-y-6 md:col-span-3">
           <PreferencesPanel items={preferences} isEditing={isEditing} onChange={handlePreferenceChange} />
           <InfoCard
@@ -146,6 +173,7 @@ export function ProfileSelf() {
         </div>
       </div>
 
+      {/* Modal d'ajout de mandat : collecte Intitulé + dates puis met à jour la colonne gauche */}
       <Modal
         title="Ajouter un mandat"
         open={isMembershipModalOpen}
@@ -193,24 +221,3 @@ export function ProfileSelf() {
 function getInfoValue(items: ProfileInfoItem[], label: InfoField) {
   return items.find((item) => item.label === label)?.value ?? ''
 }
-  function addMembership() {
-    if (!newMembership.title.trim() || !newMembership.start.trim()) {
-      return
-    }
-    setMemberships((prev) => [
-      ...prev,
-      { id: `membership-${Date.now()}`, title: newMembership.title, start: newMembership.start, end: newMembership.end }
-    ])
-    setNewMembership({ title: '', start: '', end: '' })
-  }
-
-  function handleMembershipModalSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    addMembership()
-    setMembershipModalOpen(false)
-  }
-
-  function openMembershipModal() {
-    setNewMembership({ title: '', start: '', end: '' })
-    setMembershipModalOpen(true)
-  }
