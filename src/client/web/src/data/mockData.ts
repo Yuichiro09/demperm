@@ -90,29 +90,6 @@ export const profilePublic = {
   ]
 }
 
-export const mockPosts = [
-  { id: 'post-1', title: 'Post 1', excerpt: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-  { id: 'post-2', title: 'Post 2', excerpt: 'Ut enim ad minim veniam, quis nostrud exercitation.' },
-  { id: 'post-3', title: 'Post 3', excerpt: 'Duis aute irure dolor in reprehenderit.' }
-]
-
-export const forumCommunities = {
-  mine: [
-    { id: 'comm-1', title: 'Communauté 1', subtitle: 'Titre du post' },
-    { id: 'comm-2', title: 'Communauté 2', subtitle: 'Titre du post' },
-    { id: 'comm-3', title: 'Communauté 3', subtitle: 'Titre du post' },
-    { id: 'comm-4', title: 'Communauté 4', subtitle: 'Titre du post' },
-    { id: 'comm-5', title: 'Communauté 5', subtitle: 'Titre du post' }
-  ],
-  trends: [
-    { id: 'trend-1', title: 'Communauté populaire 1', subtitle: 'Titre du post' },
-    { id: 'trend-2', title: 'Communauté populaire 2', subtitle: 'Titre du post' },
-    { id: 'trend-3', title: 'Communauté populaire 3', subtitle: 'Titre du post' },
-    { id: 'trend-4', title: 'Communauté populaire 4', subtitle: 'Titre du post' },
-    { id: 'trend-5', title: 'Communauté populaire 5', subtitle: 'Titre du post' }
-  ]
-}
-
 export const messagesList = [
   { id: 'choupinou', title: 'Choupinou' },
   { id: 'amynomous', title: 'Amynomous' },
