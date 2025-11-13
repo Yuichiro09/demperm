@@ -12,6 +12,13 @@ npm run dev   # http://localhost:5173
 
 > `npm run build` déclenche `tsc` puis `vite build`. Aucun paquet global requis.
 
+### Versions recommandées
+
+- **Node.js** : ≥ 18.20 LTS (testé avec 18.20.8)
+- **npm** : ≥ 10 (lié à la version de Node ci-dessus)
+- **nvm** (optionnel mais conseillé) : v0.39.7 pour basculer facilement entre les versions
+- **Vite** : 5.x (dépendance locale, installée via `npm install`)
+
 ## Structure guidée
 
 Du général vers le spécifique :
