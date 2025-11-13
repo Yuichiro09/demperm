@@ -7,7 +7,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   helperText?: string
 }
 
+/**
+ * Controlled input used across forms.
+ */
 export const Input = forwardRef<HTMLInputElement, InputProps>(({ label, helperText, className, ...props }, ref) => {
+  // Les pages fournissent ici la valeur contrôlée issue de leurs hooks (profil, messages, etc.).
   const Wrapper: 'label' | 'div' = label ? 'label' : 'div'
   return (
     <Wrapper className="flex w-full flex-col gap-1 text-sm text-muted">

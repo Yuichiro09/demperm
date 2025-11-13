@@ -17,6 +17,7 @@ interface TabsProps {
 }
 
 export function Tabs({ defaultValue, value, onValueChange, children }: TabsProps) {
+  // Piloté par les pages (ex VoteDashboard) pour refléter les filtres récupérés côté API.
   const [internal, setInternal] = useState(defaultValue)
   const activeValue = value ?? internal
 
@@ -33,6 +34,7 @@ export function Tabs({ defaultValue, value, onValueChange, children }: TabsProps
   return <TabsContext.Provider value={ctx}>{children}</TabsContext.Provider>
 }
 
+/** Wraps the tabs triggers with shared styling. */
 export function TabsList({ children }: { children: ReactNode }) {
   return (
     <div className="flex gap-2 rounded-2xl border border-border bg-background-soft p-1">
@@ -46,6 +48,7 @@ interface TabsTriggerProps {
   children: ReactNode
 }
 
+/** Individual trigger button selecting a tab value. */
 export function TabsTrigger({ value, children }: TabsTriggerProps) {
   const ctx = useTabsContext()
   const isActive = ctx.active === value
@@ -64,6 +67,7 @@ export function TabsTrigger({ value, children }: TabsTriggerProps) {
   )
 }
 
+/** Render content only when the related tab is active. */
 export function TabsContent({ value, children }: { value: string; children: ReactNode }) {
   const ctx = useTabsContext()
   if (ctx.active !== value) return null

@@ -1,10 +1,14 @@
 // Page profil public : présente les infos visibles par tous sans actions.
-import { profilePublic } from '../data/mockData'
+import { profilePublic } from '../data/mockData' // TODO API: remplacer par les données publiques renvoyées par GET /api/profile/:id/public.
 import { ProfileHeader } from '../components/composite/ProfileHeader'
 import { ProfileBio } from '../components/composite/ProfileBio'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 import { InfoCard } from '../components/composite/InfoCard'
 
+/**
+ * Read-only view of a user's public profile.
+ * @returns JSX.Element containing the public profile sections.
+ */
 export function ProfilePublic() {
   const publicInfo = profilePublic.info.filter((item) => ['Prénom', 'Nom', 'Pseudo'].includes(item.label))
 
@@ -16,7 +20,7 @@ export function ProfilePublic() {
         role={profilePublic.role}
         location={profilePublic.location}
         avatarUrl={profilePublic.avatarUrl}
-        stats={profilePublic.stats}
+        stats={profilePublic.stats /* Compteurs à hydrater depuis le backend public. */}
       />
 
       <div className="grid gap-6 md:grid-cols-12">

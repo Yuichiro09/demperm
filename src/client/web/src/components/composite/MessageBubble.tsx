@@ -2,11 +2,15 @@
 import clsx from 'classnames'
 
 interface MessageBubbleProps {
+  // Contenu et timestamp sont injectés depuis l'API de messagerie (Messages.tsx).
   content: string
   timestamp?: string
   mine?: boolean
 }
 
+/**
+ * Chat bubble used inside the messaging thread.
+ */
 export function MessageBubble({ content, timestamp, mine }: MessageBubbleProps) {
   return (
     <div className={clsx('flex w-full', mine ? 'justify-end' : 'justify-start')}>

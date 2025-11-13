@@ -2,7 +2,7 @@
 import clsx from 'classnames'
 
 interface AvatarProps {
-  src?: string
+  src?: string // URL fournie par l'API après upload de l'utilisateur.
   alt: string
   size?: 'sm' | 'md' | 'lg'
   fallback?: string
@@ -14,6 +14,7 @@ const sizeMap = {
   lg: 'h-24 w-24'
 }
 
+/** Circular avatar that displays the uploaded photo or user initials. */
 export function Avatar({ src, alt, size = 'md', fallback }: AvatarProps) {
   return (
     <div className={clsx('overflow-hidden rounded-full border border-border bg-background-soft', sizeMap[size])}>

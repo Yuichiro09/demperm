@@ -17,10 +17,14 @@ const trendTabs = [
 
 type VoteSummary = { id: string; label: string; value: string; ratio: string }
 
-// Les données seront alimentées par l'API plus tard ; on laisse vide pour supprimer les mocks.
+// TODO API: remplacer ces tableaux par les réponses GET /api/elections et GET /api/vote-summary.
 const elections: SidebarItem[] = []
 const voteSummary: VoteSummary[] = []
 
+/**
+ * Vote dashboard page with sidebar, tabbed graphs and quick actions.
+ * @returns JSX.Element describing the vote layout.
+ */
 export function VoteDashboard() {
   const [activeElection, setActiveElection] = useState<string | null>(null)
   const [expandedGraphs, setExpandedGraphs] = useState<Record<string, boolean>>({
@@ -28,7 +32,12 @@ export function VoteDashboard() {
   })
   const hasElections = elections.length > 0
   const hasVoteSummary = voteSummary.length > 0
+  /** Select an election from the sidebar (future API selection). */
   const handleSelectElection = useCallback((id: string) => setActiveElection(id), [])
+  /**
+   * Expand/collapse a graph card by its identifier.
+   * @param id card identifier
+   */
   const toggleGraph = useCallback((id: string) => {
     setExpandedGraphs((prev) => ({ ...prev, [id]: !prev[id] }))
   }, [])
@@ -156,6 +165,14 @@ type GraphCardProps = {
   children: ReactNode
 }
 
+/**
+ * Collapsible wrapper for each graph area.
+ * @param id unique identifier per graph.
+ * @param title section title.
+ * @param expanded indicates whether content is visible.
+ * @param onToggle callback to toggle state.
+ * @param children graph placeholder content.
+ */
 function GraphCard({ id, title, expanded, onToggle, children }: GraphCardProps) {
   return (
     <Card>
@@ -176,6 +193,12 @@ type PlaceholderProps = {
   className?: string
 }
 
+/**
+ * Placeholder component used until real charts are plugged in.
+ * @param label text displayed in the middle.
+ * @param height CSS height (string).
+ * @param className optional additional classes.
+ */
 function Placeholder({ label, height, className }: PlaceholderProps) {
   return (
     <div

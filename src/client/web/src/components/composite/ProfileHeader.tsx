@@ -4,6 +4,7 @@ import { Avatar } from '../ui/Avatar'
 import { StatValue } from '../ui/Card'
 
 export interface ProfileHeaderProps {
+  // Ces champs proviennent du profil utilisateur renvoyé par l'API (GET /api/profile/self ou public).
   fullName: string
   role: string
   location: string
@@ -16,6 +17,9 @@ export interface ProfileHeaderProps {
   photoEditable?: boolean
 }
 
+/**
+ * Summary header for a profile card (avatar, location, stats and edit controls).
+ */
 export function ProfileHeader({
   fullName,
   role,

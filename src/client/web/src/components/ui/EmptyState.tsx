@@ -2,6 +2,7 @@
 import { ReactNode } from 'react'
 
 interface EmptyStateProps {
+  // Les pages fournissent les textes selon les données manquantes (ex: zéro post ou zéro conversation).
   title: string
   description?: string
   action?: ReactNode

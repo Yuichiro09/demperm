@@ -2,6 +2,7 @@
 import clsx from 'classnames'
 
 interface VoteCardProps {
+  // title/subtitle/votes proviendront des résultats GET /api/elections/:id côté VoteDashboard.
   title: string
   subtitle?: string
   votes?: string
@@ -10,6 +11,9 @@ interface VoteCardProps {
   onClick?: () => void
 }
 
+/**
+ * Presentational card highlighting vote summary per election.
+ */
 export function VoteCard({ title, subtitle, votes, accent = 'default', active, onClick }: VoteCardProps) {
   return (
     <button

@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import clsx from 'classnames'
 
 interface ToastProps {
+  // Les mutations côté pages fournissent title/description en fonction des réponses backend.
   title: string
   description?: string
   tone?: 'default' | 'success' | 'warning' | 'danger'

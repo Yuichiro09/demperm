@@ -1,6 +1,6 @@
 # Demperm – Client Web UI
 
-Prototype React + Tailwind pour livrer les 4 écrans demandés (Profil, Vote, Forum, Messagerie) selon le cahier des charges du dossier `docs/client/web/README.md`. L'application se concentre uniquement sur l'UI : pas de logique métier ni d'appels réseau, uniquement des données statiques stockées dans `src/data/mockData.ts` afin d'illustrer la structure attendue côté backend.
+Prototype React + Tailwind pour livrer les 4 écrans demandés (Profil, Vote, Forum, Messagerie) selon le cahier des charges du dossier `docs/client/web/README.md`. L'application se concentre uniquement sur l'UI : pas de logique métier ni d'appels réseau; les sources sont maintenant vides et attendent d'être hydratées par les futures API (cf. commentaires `TODO API` dans chaque composant).
 
 ## Démarrage
 
@@ -28,7 +28,7 @@ Du général vers le spécifique :
 5. **`components/composite/`** – organismes utilisés par les pages :
    - `ProfileHeader` (avatar + stats + CTA), `ProfileBio`, `PreferencesPanel`, `InfoCard`, `SidebarList`, `VoteCard`, `MessageBubble`.
 6. **`components/ui/`** – atomes Tailwind mutualisés : `Button`, `Input`, `Card`, `Avatar`, `Tabs`, `Modal`, `Toast`, `EmptyState`, `Skeleton`.
-7. **`data/mockData.ts`** – contrats TypeScript (`Membership`, `Preference`, `Message`, etc.) + valeurs fictives partagées.
+7. **`data/mockData.ts`** – encore présent pour les types, mais les valeurs ne sont plus consommées. Branchez les appels réseau avant de supprimer définitivement ce fichier.
 
 Chaque fichier TSX commence par un commentaire descriptif pour rappeler son rôle. Les composites exposent des props simples qui pourront être reliées aux API (ex. `ProfileHeaderProps` pour hydrater l’entête).
 
@@ -49,8 +49,18 @@ Les textes, sections et intitulés reprennent fidèlement les maquettes fournies
 - **Ombres** : `shadow-sm` ou `shadow-lg` selon les blocs.
 - **Icônes** : support Lucide (`Modal` expose déjà un bouton `X`).
 
+## Hydratation attendue
+
+Chaque fichier TSX comporte désormais des commentaires `TODO API` ou des descriptions de fonctions indiquant précisément :
+
+- **Quelle route backend** doit alimenter les props/états (`GET /api/profile/self`, `GET /api/posts`, etc.).
+- **Quels handlers** doivent être reliés à des mutations (`handlePreferenceChange`, `handleSelectPost`, `handleSelectElection`, …).
+- **Quels composants** consomment les données (ex : `ProfileHeader` attend `fullName`, `role`, `stats`).
+
+Servez-vous de ces annotations pour brancher les hooks de données ou les loaders React Router sans avoir à relire tout le code.
+
 ## Prochaines étapes (backend / logique)
 
-1. **Hydratation via API** : remplacer les mocks par des hooks (ex. `useProfileSelfQuery`) qui injecteront les objets attendus par les composants composites.
-2. **Actions** : brancher les boutons (upload photo, mettre à jour préférences, envoyer un message) vers les mutations backend. Les composants gèrent déjà les handlers (`onEdit`, `onAction`, `onSelect`).
-3. **État / navigation** : brancher un store (TanStack Query, Zustand…) si nécessaire pour partager l’identité de l’utilisateur entre les pages.
+1. **Hydratation via API** : implémenter les hooks/fetchers indiqués dans les commentaires (Query Client + loaders Router si besoin).
+2. **Actions** : brancher les boutons (upload photo, mise à jour des préférences, création de posts, envoi de messages) aux endpoints correspondants.
+3. **État / navigation** : brancher un store (TanStack Query, Zustand…) pour partager l’identité utilisateur entre pages, puis supprimer définitivement les placeholders.

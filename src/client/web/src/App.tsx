@@ -7,9 +7,14 @@ import { VoteDashboard } from './pages/VoteDashboard'
 import { ForumHome } from './pages/ForumHome'
 import { Messages } from './pages/Messages'
 
+/**
+ * Root application router.
+ * @returns JSX.Element wrapped in the shared `AppShell`.
+ */
 export default function App() {
   return (
     <AppShell>
+      {/* TODO API: brancher des loaders React Router ici pour hydrater chaque page avant le rendu (session, profil, etc.). */}
       <Routes>
         <Route path="/" element={<Navigate to="/profil" replace />} />
         <Route path="/profil" element={<ProfileSelf />} />

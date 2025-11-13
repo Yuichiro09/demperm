@@ -10,13 +10,16 @@ export interface SidebarItem {
 
 interface SidebarListProps {
   title?: string
-  items: SidebarItem[]
+  items: SidebarItem[] // Fournis par les pages (ex: communautés, conversations) après fetch API.
   activeId?: string
   onSelect?: (id: string) => void
   actionLabel?: string
   onAction?: () => void
 }
 
+/**
+ * Generic sidebar list used for communities, messages or elections.
+ */
 export function SidebarList({ title, items, activeId, onSelect, actionLabel, onAction }: SidebarListProps) {
   return (
     <aside className="rounded-2xl border border-border bg-white shadow-sm">

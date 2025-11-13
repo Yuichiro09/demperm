@@ -10,14 +10,18 @@ import { Modal } from '../components/ui/Modal'
 type PostPreview = { id: string; title: string; excerpt: string; communityId: string; hasImage?: boolean }
 type CommentPreview = { id: string; author: string; message: string; time: string }
 
+/**
+ * Forum home layout with search, community lists, feed and post detail view.
+ * @returns JSX markup for the forum experience.
+ */
 export function ForumHome() {
   const [search, setSearch] = useState('')
   const [activeCommunityId, setActiveCommunityId] = useState<string | null>(null)
-  const [communities] = useState<SidebarItem[]>([])
-  const [trending] = useState<SidebarItem[]>([])
+  const [communities] = useState<SidebarItem[]>([]) // TODO API: injecter la liste renvoyée par GET /api/communities.
+  const [trending] = useState<SidebarItem[]>([]) // TODO API: brancher sur /api/communities/trending si disponible.
   const [isEditCommunities, setEditCommunities] = useState(false)
-  const [posts] = useState<PostPreview[]>([])
-  const [comments] = useState<CommentPreview[]>([])
+  const [posts] = useState<PostPreview[]>([]) // TODO API: hydrater via GET /api/posts?communityId=...
+  const [comments] = useState<CommentPreview[]>([]) // TODO API: charger les commentaires du post sélectionné.
   const [activePostId, setActivePostId] = useState<string | null>(null)
   const [isCreatePostModalOpen, setCreatePostModalOpen] = useState(false)
   const [isAddCommunityModalOpen, setAddCommunityModalOpen] = useState(false)
@@ -37,11 +41,18 @@ export function ForumHome() {
     return filteredPosts.find((post) => post.id === activePostId) ?? null
   }, [filteredPosts, activePostId])
 
+  /**
+   * Select a post to show the detail pane.
+   * @param id post identifier coming from the feed.
+   */
   function handleSelectPost(id: string) {
     setActivePostId(id)
     setDetailView(true)
   }
 
+  /**
+   * Close detail view and return to the feed list.
+   */
   function handleBackToFeed() {
     setDetailView(false)
   }

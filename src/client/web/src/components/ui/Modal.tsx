@@ -7,7 +7,7 @@ interface ModalProps {
   title: string
   open: boolean
   onClose?: () => void
-  children: ReactNode
+  children: ReactNode // Contenu défini par les pages (formulaires reliés à l'API).
   footer?: ReactNode
 }
 

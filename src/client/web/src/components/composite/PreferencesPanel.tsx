@@ -3,6 +3,7 @@ import { SelectHTMLAttributes } from 'react'
 import { Link } from 'react-router-dom'
 
 export interface PreferenceItem {
+  // Remplir ces préférences à partir de la configuration profil renvoyée par le backend (privé/public).
   id: string
   label: string
   value: string
@@ -18,6 +19,9 @@ interface PreferencesPanelProps {
   onChange?: (id: string, value: string) => void
 }
 
+/**
+ * Preferences list with optional select inputs or shortcut links.
+ */
 export function PreferencesPanel({ title = 'Préférences', items, isEditing, onChange }: PreferencesPanelProps) {
   return (
     <section className="rounded-2xl border border-border bg-white shadow-sm">

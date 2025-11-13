@@ -4,12 +4,15 @@ import clsx from 'classnames'
 
 interface ProfileBioProps {
   title?: string
-  bio: string
+  bio: string // Hydraté par le champ "bio" renvoyé par le backend (profil personnel/public).
   editable?: boolean
   placeholder?: string
   onChange?: TextareaHTMLAttributes<HTMLTextAreaElement>['onChange']
 }
 
+/**
+ * Rich bio block capable of switching between read-only and editing states.
+ */
 export function ProfileBio({ title = 'Bio', bio, editable, placeholder, onChange }: ProfileBioProps) {
   const hasContent = !!bio?.trim()
   return (

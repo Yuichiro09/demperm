@@ -8,6 +8,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
+      {/* TODO API: greffer ici les providers (QueryClient, AuthProvider) qui chargeront les données utilisateur globales. */}
       <App />
     </BrowserRouter>
   </React.StrictMode>

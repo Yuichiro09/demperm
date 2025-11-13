@@ -2,6 +2,7 @@
 import { NavLink } from 'react-router-dom'
 import { PropsWithChildren } from 'react'
 
+// TODO API: ajuster cette navigation selon les routes autorisées dans la session utilisateur renvoyée par le backend.
 const navItems = [
   { to: '/profil', label: 'Profil' },
   { to: '/profil/public', label: 'Profil public' },
@@ -10,6 +11,9 @@ const navItems = [
   { to: '/messages', label: 'Messagerie' }
 ]
 
+/**
+ * Shared shell: header + nav + bounded main container.
+ */
 export function AppShell({ children }: PropsWithChildren) {
   return (
     <div className="min-h-screen bg-background-soft">
