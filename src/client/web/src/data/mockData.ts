@@ -96,22 +96,6 @@ export const mockPosts = [
   { id: 'post-3', title: 'Post 3', excerpt: 'Duis aute irure dolor in reprehenderit.' }
 ]
 
-export const elections = [
-  { id: 'municipales', title: 'Élections municipales', candidate: 'Jean-Pierre Papin', votes: '2 000 voix (13%)' },
-  { id: 'departementales', title: 'Élections départementales', candidate: 'Olivia Schneider', votes: '3 508 voix (10%)' },
-  { id: 'regionales', title: 'Élections régionales', candidate: 'Sébastien Amazigh', votes: '5 688 293 voix (65%)' },
-  { id: 'legislatives', title: 'Élections législatives', candidate: 'Karl Göller', votes: '18 307 voix (45%)' },
-  { id: 'presidentielles', title: 'Élections présidentielles', candidate: 'Marc Emmanuel', votes: '18 200 592 voix (37%)' }
-]
-
-export const voteSummary = [
-  { id: 'municipales', label: 'Municipales', value: '4 622', ratio: '7%' },
-  { id: 'departementales', label: 'Départementales', value: '800', ratio: '<1%' },
-  { id: 'regionales', label: 'Régionales', value: '65', ratio: '<1%' },
-  { id: 'legislatives', label: 'Législatives', value: '1 542', ratio: '3%' },
-  { id: 'presidentielles', label: 'Présidentielles', value: '13', ratio: '<1%' }
-]
-
 export const forumCommunities = {
   mine: [
     { id: 'comm-1', title: 'Communauté 1', subtitle: 'Titre du post' },

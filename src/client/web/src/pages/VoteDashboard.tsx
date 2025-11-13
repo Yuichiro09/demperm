@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 // Vue vote : reproduit le tableau de bord des tendances électorales.
 import clsx from 'classnames'
-import { elections, voteSummary } from '../data/mockData'
-import { SidebarList } from '../components/composite/SidebarList'
+import { SidebarList, SidebarItem } from '../components/composite/SidebarList'
 import { VoteCard } from '../components/composite/VoteCard'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/Tabs'
 import { Button } from '../components/ui/Button'
+import { EmptyState } from '../components/ui/EmptyState'
 
 const trendTabs = [
   { id: 'municipales', label: 'Municipales' },
@@ -15,22 +15,46 @@ const trendTabs = [
   { id: 'legislatives', label: 'Législatives' }
 ]
 
+type VoteSummary = { id: string; label: string; value: string; ratio: string }
+
+// Les données seront alimentées par l'API plus tard ; on laisse vide pour supprimer les mocks.
+const elections: SidebarItem[] = []
+const voteSummary: VoteSummary[] = []
+
 export function VoteDashboard() {
-  const [activeElection, setActiveElection] = useState(elections[0]?.id ?? 'municipales')
+  const [activeElection, setActiveElection] = useState<string | null>(null)
+  const [expandedGraphs, setExpandedGraphs] = useState<Record<string, boolean>>({
+    [`trend-${trendTabs[0].id}`]: true
+  })
+  const hasElections = elections.length > 0
+  const hasVoteSummary = voteSummary.length > 0
+  const handleSelectElection = useCallback((id: string) => setActiveElection(id), [])
+  const toggleGraph = useCallback((id: string) => {
+    setExpandedGraphs((prev) => ({ ...prev, [id]: !prev[id] }))
+  }, [])
 
   return (
     <div className="grid gap-6 md:grid-cols-[280px_minmax(0,1fr)_220px]">
-      <SidebarList
-        title="Liste des personnalités"
-        items={elections.map((election) => ({
-          id: election.id,
-          title: election.title,
-          subtitle: election.candidate,
-          meta: election.votes
-        }))}
-        activeId={activeElection}
-        onSelect={setActiveElection}
-      />
+      {hasElections ? (
+        <SidebarList
+          title="Liste des personnalités"
+          items={elections}
+          activeId={activeElection ?? undefined}
+          onSelect={handleSelectElection}
+        />
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>Liste des personnalités</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <EmptyState
+              title="Aucune donnée"
+              description="Les élections apparaîtront automatiquement dès qu'elles seront synchronisées avec l'API."
+            />
+          </CardContent>
+        </Card>
+      )}
 
       <section className="space-y-4">
         <Tabs defaultValue={trendTabs[0].id}>
@@ -41,56 +65,34 @@ export function VoteDashboard() {
               </TabsTrigger>
             ))}
           </TabsList>
-          {trendTabs.map((tab) => (
-            <TabsContent key={tab.id} value={tab.id}>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Tendance élection {tab.label.toLowerCase()} (top 4)</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Placeholder height="200px" label="Graphe" />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
+          {trendTabs.map((tab) => {
+            const graphId = `trend-${tab.id}`
+            return (
+              <TabsContent key={tab.id} value={tab.id}>
+                <GraphCard id={graphId} title={`Tendance élection ${tab.label.toLowerCase()} (top 4)`} expanded={Boolean(expandedGraphs[graphId])} onToggle={toggleGraph}>
+                  <Placeholder label="Graphe" height="200px" />
+                </GraphCard>
+              </TabsContent>
+            )
+          })}
         </Tabs>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Analyse départementale</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Placeholder height="140px" label="Graphe départemental" />
-          </CardContent>
-        </Card>
+        <GraphCard id="analysis" title="Analyse départementale" expanded={Boolean(expandedGraphs.analysis)} onToggle={toggleGraph}>
+          <Placeholder label="Graphe départemental" height="140px" />
+        </GraphCard>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Graphe régional (non voté)</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Placeholder height="120px" label="Graphique" className="border-danger" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Graphe législatif</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Placeholder height="120px" label="Graphique" />
-            </CardContent>
-          </Card>
+        <div className="space-y-4">
+          <GraphCard id="regional" title="Graphe régional (non voté)" expanded={Boolean(expandedGraphs.regional)} onToggle={toggleGraph}>
+            <Placeholder label="Graphique" height="120px" className="border-danger" />
+          </GraphCard>
+          <GraphCard id="legislative" title="Graphe législatif" expanded={Boolean(expandedGraphs.legislative)} onToggle={toggleGraph}>
+            <Placeholder label="Graphique" height="120px" />
+          </GraphCard>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Graphe présidentiel</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Placeholder height="160px" label="Graphique" />
-          </CardContent>
-        </Card>
+        <GraphCard id="presidential" title="Graphe présidentiel" expanded={Boolean(expandedGraphs.presidential)} onToggle={toggleGraph}>
+          <Placeholder label="Graphique" height="160px" />
+        </GraphCard>
 
         <div className="flex justify-end">
           <Button variant="outline">Regarder d'autres élections</Button>
@@ -98,21 +100,35 @@ export function VoteDashboard() {
       </section>
 
       <aside className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Mes voix</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {voteSummary.map((summary) => (
-              <VoteCard
-                key={summary.id}
-                title={`${summary.label} : ${summary.value}`}
-                subtitle={summary.ratio}
-                active={summary.id === activeElection}
+        {hasVoteSummary ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>Mes voix</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {voteSummary.map((summary) => (
+                <VoteCard
+                  key={summary.id}
+                  title={`${summary.label} : ${summary.value}`}
+                  subtitle={summary.ratio}
+                  active={summary.id === activeElection}
+                />
+              ))}
+            </CardContent>
+          </Card>
+        ) : (
+          <Card>
+            <CardHeader>
+              <CardTitle>Mes voix</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <EmptyState
+                title="Pas encore de voix"
+                description="Les statistiques apparaîtront quand l'utilisateur aura enregistré des votes."
               />
-            ))}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
         <Card>
           <CardHeader>
@@ -132,10 +148,41 @@ export function VoteDashboard() {
   )
 }
 
-function Placeholder({ height, label, className }: { height: string; label: string; className?: string }) {
+type GraphCardProps = {
+  id: string
+  title: string
+  expanded: boolean
+  onToggle: (id: string) => void
+  children: ReactNode
+}
+
+function GraphCard({ id, title, expanded, onToggle, children }: GraphCardProps) {
+  return (
+    <Card>
+      <CardHeader
+        onClick={() => onToggle(id)}
+        className="flex cursor-pointer items-center justify-between border-b border-border px-4 py-3"
+      >
+        <CardTitle className="text-base">{title}</CardTitle>
+      </CardHeader>
+      {expanded && <CardContent className="pt-4">{children}</CardContent>}
+    </Card>
+  )
+}
+
+type PlaceholderProps = {
+  label: string
+  height: string
+  className?: string
+}
+
+function Placeholder({ label, height, className }: PlaceholderProps) {
   return (
     <div
-      className={clsx('flex items-center justify-center rounded-2xl border border-dashed border-border text-sm text-muted', className)}
+      className={clsx(
+        'flex items-center justify-center rounded-2xl border border-dashed border-border text-sm text-muted',
+        className
+      )}
       style={{ height }}
     >
       {label}
