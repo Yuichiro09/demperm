@@ -15,6 +15,10 @@ import { Button } from '../../../components/ui/Button'
 import { Input } from '../../../components/ui/Input'
 import { Modal } from '../../../components/ui/Modal'
 
+/**
+ * Profil perso : édition inline (bio, infos, préférences, mandats).
+ * @param none utilise les mocks locaux pour préremplir les états
+ */
 export default function SocialDashboardPage() {
   const [preferences, setPreferences] = useState<Preference[]>(profileSelf.preferences)
   const [infoItems, setInfoItems] = useState<ProfileInfoItem[]>(profileSelf.info)
@@ -30,11 +34,13 @@ export default function SocialDashboardPage() {
   const [isMembershipModalOpen, setMembershipModalOpen] = useState(false)
   const [newMembership, setNewMembership] = useState({ title: '', start: '', end: '' })
 
-  function handlePreferenceChange(id: string, value: string) {
+/** Met à jour localement une préférence par id. */
+function handlePreferenceChange(id: string, value: string) {
     setPreferences((prev) => prev.map((pref) => (pref.id === id ? { ...pref, value } : pref)))
   }
 
-  function handleInfoChange(label: string, value: string) {
+/** Propagation des changements d'infos vers l'état profil. */
+function handleInfoChange(label: string, value: string) {
     const nextInfo = infoItems.map((item) => (item.label === label ? { ...item, value } : item))
     setInfoItems(nextInfo)
     setProfile((prev) => {
@@ -51,22 +57,26 @@ export default function SocialDashboardPage() {
     })
   }
 
-  const handleAvatarChange = useCallback((file: File | null) => {
+/** Prévisualise l'avatar sélectionné (URL locale). */
+const handleAvatarChange = useCallback((file: File | null) => {
     if (!file) return
     const previewUrl = URL.createObjectURL(file)
     setProfile((prev) => ({ ...prev, avatarUrl: previewUrl }))
   }, [])
 
-  function handleBioChange(event: ChangeEvent<HTMLTextAreaElement>) {
+/** Met à jour la bio locale à chaque frappe. */
+function handleBioChange(event: ChangeEvent<HTMLTextAreaElement>) {
     const value = event.target.value
     setProfile((prev) => ({ ...prev, bio: value }))
   }
 
-  function toggleEditing() {
+/** Bascule le mode édition de la page. */
+function toggleEditing() {
     setIsEditing((prev) => !prev)
   }
 
-  function addMembership() {
+/** Ajoute un mandat en local si le formulaire est valide. */
+function addMembership() {
     if (!newMembership.title.trim() || !newMembership.start.trim()) {
       return
     }
@@ -77,13 +87,15 @@ export default function SocialDashboardPage() {
     setNewMembership({ title: '', start: '', end: '' })
   }
 
-  function handleMembershipModalSubmit(event: FormEvent<HTMLFormElement>) {
+/** Soumet le formulaire d'ajout de mandat. */
+function handleMembershipModalSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     addMembership()
     setMembershipModalOpen(false)
   }
 
-  const openMembershipModal = useCallback(() => {
+/** Réinitialise et ouvre la modale d'ajout de mandat. */
+const openMembershipModal = useCallback(() => {
     setNewMembership({ title: '', start: '', end: '' })
     setMembershipModalOpen(true)
   }, [])

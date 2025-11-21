@@ -8,6 +8,10 @@ import { EmptyState } from '../../../components/ui/EmptyState'
 type Thread = { id: string; title: string }
 type Message = { id: string; content: string; mine?: boolean; timestamp: string }
 
+/**
+ * Messagerie : sidebar des conversations + thread actif.
+ * @param none utilise des listes vides (TODO API)
+ */
 export default function MessagesPage() {
   const [threads] = useState<Thread[]>([])
   const [messagesByThread] = useState<Record<string, Message[]>>({})
@@ -70,6 +74,7 @@ export default function MessagesPage() {
   )
 }
 
+/** Renvoie le titre de la conversation active. */
 function getConversationTitle(id: string | null, threads: Thread[]) {
   if (!id) return 'Aucune conversation active'
   return threads.find((item) => item.id === id)?.title ?? 'Conversation'

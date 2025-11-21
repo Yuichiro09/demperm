@@ -4,6 +4,10 @@ import { ProfileBio } from '../../../components/composite/ProfileBio'
 import { InfoCard } from '../../../components/composite/InfoCard'
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card'
 
+/**
+ * Page profil public : présente les infos visibles par tous sans actions.
+ * @param none utilise les données mock profilePublic
+ */
 export default function PublicProfilePage() {
   const publicInfo = profilePublic.info.filter((item) => ['Prénom', 'Nom', 'Pseudo'].includes(item.label))
 

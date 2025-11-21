@@ -10,6 +10,10 @@ type SidebarItem = { id: string; title: string; subtitle?: string; meta?: string
 type PostPreview = { id: string; title: string; excerpt: string; communityId: string; hasImage?: boolean }
 type CommentPreview = { id: string; author: string; message: string; time: string }
 
+/**
+ * Forum/communautés : sidebar + flux + modales de création.
+ * @param none utilise des tableaux vides en attendant l'API
+ */
 export default function ForumHomePage() {
   const [search, setSearch] = useState('')
   const [activeCommunityId, setActiveCommunityId] = useState<string | null>(null)
@@ -23,25 +27,30 @@ export default function ForumHomePage() {
   const [isAddCommunityModalOpen, setAddCommunityModalOpen] = useState(false)
   const [isDetailView, setDetailView] = useState(false)
 
+  /** Résout le nom de la communauté active pour l'affichage. */
   const activeCommunityName = useMemo(() => {
     return communities.find((item) => item.id === activeCommunityId)?.title ?? null
   }, [communities, activeCommunityId])
 
+  /** Filtre les posts selon la communauté sélectionnée. */
   const filteredPosts = useMemo(() => {
     if (!activeCommunityId) return posts
     return posts.filter((post) => post.communityId === activeCommunityId)
   }, [posts, activeCommunityId])
 
+  /** Post actuellement ouvert en détail. */
   const activePost = useMemo(() => {
     if (!activePostId) return null
     return filteredPosts.find((post) => post.id === activePostId) ?? null
   }, [filteredPosts, activePostId])
 
+  /** Sélectionne un post pour l'afficher en détail. */
   function handleSelectPost(id: string) {
     setActivePostId(id)
     setDetailView(true)
   }
 
+  /** Ferme la vue détail et revient au flux. */
   function handleBackToFeed() {
     setDetailView(false)
   }
@@ -267,6 +276,7 @@ export default function ForumHomePage() {
   )
 }
 
+/** Modal de création de post. */
 function CreatePostModal({
   open,
   onClose,
@@ -334,6 +344,7 @@ function CreatePostModal({
   )
 }
 
+/** Modal d'ajout de communauté. */
 function AddCommunityModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Modal

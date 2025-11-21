@@ -24,6 +24,10 @@ type VoteSummary = { id: string; label: string; value: string; ratio: string }
 const elections: SidebarItem[] = []
 const voteSummary: VoteSummary[] = []
 
+/**
+ * Dashboard vote : listes, cartes et placeholders de tendances.
+ * @param none données mock vides en attendant l'API
+ */
 export default function VoteDashboardPage() {
   const [activeElection, setActiveElection] = useState<string | null>(null)
   const [expandedGraphs, setExpandedGraphs] = useState<Record<string, boolean>>(
@@ -34,7 +38,9 @@ export default function VoteDashboardPage() {
   )
   const hasElections = elections.length > 0
   const hasVoteSummary = voteSummary.length > 0
+  /** Sélectionne une élection dans la sidebar. */
   const handleSelectElection = useCallback((id: string) => setActiveElection(id), [])
+  /** Bascule l'expansion d'un graphe. */
   const toggleGraph = useCallback((id: string) => {
     setExpandedGraphs((prev) => ({ ...prev, [id]: !prev[id] }))
   }, [])
@@ -125,6 +131,7 @@ export default function VoteDashboardPage() {
   )
 }
 
+/** Carte repliable pour chaque graphe. */
 function GraphCard({ id, title, expanded, onToggle, children }: { id: string; title: string; expanded: boolean; onToggle: (id: string) => void; children: ReactNode }) {
   return (
     <Card>
@@ -136,6 +143,7 @@ function GraphCard({ id, title, expanded, onToggle, children }: { id: string; ti
   )
 }
 
+/** Placeholder visuel en attendant les vrais graphes. */
 function Placeholder({ label, height, className }: { label: string; height: string; className?: string }) {
   return (
     <div
