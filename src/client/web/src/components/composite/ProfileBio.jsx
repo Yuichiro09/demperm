@@ -2,7 +2,12 @@
 import clsx from 'classnames'
 
 /**
- * Rich bio block capable of switching between read-only and editing states.
+ * Bloc biographie pouvant basculer lecture/édition.
+ * @param title titre de la section
+ * @param bio contenu de la bio
+ * @param editable bascule champ textarea
+ * @param placeholder texte d'attente
+ * @param onChange callback changement de texte
  */
 export function ProfileBio({ title = 'Bio', bio, editable, placeholder, onChange }) {
   const hasContent = !!bio?.trim()

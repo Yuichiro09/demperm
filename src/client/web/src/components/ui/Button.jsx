@@ -15,7 +15,10 @@ const sizeClasses = {
 }
 
 /**
- * Generic button component with consistent variants/sizes.
+ * Bouton réutilisable avec variantes et tailles cohérentes.
+ * @param variant 'primary' | 'secondary' | 'ghost' | 'outline'
+ * @param size 'sm' | 'md' | 'lg'
+ * @param icon icône affichée avant le texte
  */
 export function Button({
   variant = 'primary',

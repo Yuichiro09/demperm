@@ -2,7 +2,10 @@
 import clsx from 'classnames'
 
 /**
- * Chat bubble used inside the messaging thread.
+ * Bulle de chat utilisée dans le fil de messagerie.
+ * @param content texte du message
+ * @param timestamp horodatage optionnel
+ * @param mine indique si le message est le mien
  */
 export function MessageBubble({ content, timestamp, mine }) {
   return (

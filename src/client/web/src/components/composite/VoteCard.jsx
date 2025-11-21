@@ -3,6 +3,12 @@ import clsx from 'classnames'
 
 /**
  * Presentational card highlighting vote summary per election.
+ * @param title titre de la carte
+ * @param subtitle sous-titre optionnel
+ * @param votes texte pour le nombre de votes
+ * @param accent accent de statut ('default' | 'warning' | 'danger')
+ * @param active indique la sélection
+ * @param onClick callback au clic
  */
 export function VoteCard({ title, subtitle, votes, accent = 'default', active, onClick }) {
   return (

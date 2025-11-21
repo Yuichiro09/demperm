@@ -7,7 +7,14 @@ const sizeMap = {
   lg: 'h-24 w-24'
 }
 
-/** Circular avatar that displays the uploaded photo or user initials. */
+/**
+ * Avatar circulaire : affiche la photo fournie ou les initiales en fallback.
+ * @param {object} props
+ * @param {string} props.src URL de la photo
+ * @param {string} props.alt texte alternatif (utilisé pour les initiales)
+ * @param {'sm'|'md'|'lg'} [props.size] taille de l'avatar
+ * @param {string} [props.fallback] texte à afficher si pas de photo
+ */
 export function Avatar({ src, alt, size = 'md', fallback }) {
   return (
     <div className={clsx('overflow-hidden rounded-full border border-border bg-background-soft', sizeMap[size])}>

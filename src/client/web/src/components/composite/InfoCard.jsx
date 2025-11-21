@@ -1,4 +1,3 @@
-// Tableau d'informations personnelles : affiche ou édite selon le mode.
 /**
  * Display/edit grid for personal information entries.
  * @param title section title

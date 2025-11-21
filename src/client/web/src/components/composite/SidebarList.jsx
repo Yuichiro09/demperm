@@ -3,6 +3,12 @@ import clsx from 'classnames'
 
 /**
  * Generic sidebar list used for communities, messages or elections.
+ * @param title titre de la liste
+ * @param items éléments à afficher (id, title, subtitle?, meta?)
+ * @param activeId identifiant actif
+ * @param onSelect callback quand on clique sur un item
+ * @param actionLabel libellé du bouton bas de liste
+ * @param onAction callback du bouton bas de liste
  */
 export function SidebarList({ title, items, activeId, onSelect, actionLabel, onAction }) {
   return (

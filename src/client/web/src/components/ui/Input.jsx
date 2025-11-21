@@ -3,7 +3,10 @@ import { forwardRef } from 'react'
 import clsx from 'classnames'
 
 /**
- * Controlled input used across forms.
+ * Champ texte réutilisable avec label/helper, utilisable en contrôlé.
+ * @param label texte du label
+ * @param helperText texte d'aide optionnel
+ * @param className classes supplémentaires
  */
 export const Input = forwardRef(function Input({ label, helperText, className, ...props }, ref) {
   // Les pages fournissent ici la valeur contrôlée issue de leurs hooks (profil, messages, etc.).

@@ -13,6 +13,11 @@ const navItems = [
 /**
  * Shared shell: header + nav + bounded main container.
  */
+/**
+ * Layout principal : bandeau républicain, header + navigation et conteneur plein écran.
+ * @param {object} props
+ * @param {React.ReactNode} props.children enfants à afficher dans la zone principale
+ */
 export function AppShell({ children }) {
   return (
     <div className="min-h-screen w-screen bg-background-soft">

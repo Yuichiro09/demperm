@@ -1,6 +1,14 @@
 // Modal léger : overlay + header/footers optionnels.
 import CloseIcon from '@mui/icons-material/Close'
 
+/**
+ * Fenêtre modale simple avec header, contenu libre et footer optionnel.
+ * @param title titre du header
+ * @param open booléen d'affichage
+ * @param onClose callback fermeture
+ * @param children contenu du corps
+ * @param footer footer optionnel
+ */
 export function Modal({ title, open, onClose, children, footer }) {
   if (!open) return null
 

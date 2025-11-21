@@ -8,6 +8,13 @@ const toneClasses = {
   danger: 'border-danger text-danger'
 }
 
+/**
+ * Message toast statique pour feedback (succès/alerte/etc.).
+ * @param title texte principal
+ * @param description texte secondaire optionnel
+ * @param tone tonalité ('default' | 'success' | 'warning' | 'danger')
+ * @param icon icône optionnelle
+ */
 export function Toast({ title, description, tone = 'default', icon }) {
   return (
     <div className={clsx('flex gap-3 rounded-2xl border bg-white px-4 py-3 shadow-sm', toneClasses[tone])}>

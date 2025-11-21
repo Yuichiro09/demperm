@@ -2,7 +2,11 @@
 import { Link } from 'react-router-dom'
 
 /**
- * Preferences list with optional select inputs or shortcut links.
+ * Liste des préférences : selects éditables ou liens d'action.
+ * @param title titre de la carte
+ * @param items tableau de préférences
+ * @param isEditing active ou pas l'édition
+ * @param onChange callback lors d'un changement de valeur
  */
 export function PreferencesPanel({ title = 'Préférences', items, isEditing, onChange }) {
   return (

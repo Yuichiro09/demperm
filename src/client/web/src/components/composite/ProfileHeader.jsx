@@ -4,7 +4,17 @@ import { Avatar } from '../ui/Avatar'
 import { StatValue } from '../ui/Card'
 
 /**
- * Summary header for a profile card (avatar, location, stats and edit controls).
+ * En-tête de profil : avatar, stats, localisation et CTA d'édition.
+ * @param fullName nom complet
+ * @param role fonction / rôle
+ * @param location localisation
+ * @param avatarUrl url de l'avatar
+ * @param stats tableau de stats (label, value)
+ * @param editable affiche le CTA d'édition
+ * @param onEdit callback quand on clique sur "modifier"
+ * @param editLabel libellé du bouton
+ * @param onPhotoChange callback lors d'un changement d'avatar
+ * @param photoEditable active l'upload
  */
 export function ProfileHeader({
   fullName,
