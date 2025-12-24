@@ -4,7 +4,8 @@
  */
 
 import { socialApi } from '../api'
-import type { ProfileSelf, PublicProfile, UserPreferences } from '../models'
+import type { SocialUserPublic } from '../api'
+import type { ProfileSelf, UserPreferences } from '../models'
 
 export class ProfileService {
   /**
@@ -17,7 +18,7 @@ export class ProfileService {
   /**
    * Get another user's public profile
    */
-  async getUserProfile(userId: string): Promise<PublicProfile> {
+  async getUserProfile(userId: string): Promise<SocialUserPublic> {
     return socialApi.getPublicProfile(userId)
   }
   

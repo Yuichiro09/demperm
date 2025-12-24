@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { getPublicProfile } from '../../../domains/social/api'
+import { socialApi } from '../../../domains/social/api'
 import { ProfileHeader } from '../../../components/composite/ProfileHeader'
 import { ProfileBio } from '../../../components/composite/ProfileBio'
 import { InfoCard } from '../../../components/composite/InfoCard'
@@ -48,46 +48,30 @@ export default function PublicProfilePage() {
     []
   )
 
-  const targetUserId = useMemo(() => searchParams.get('userId') ?? 'user-main', [searchParams])
-  const isSelf = targetUserId === 'user-main'
+  const targetUserId = useMemo(() => searchParams.get('userId') ?? '', [searchParams])
+  const isSelf = false
 
   useEffect(() => {
     async function loadProfile() {
-      const data = await getPublicProfile(targetUserId)
+      if (!targetUserId) {
+        return
+      }
+      const data = await socialApi.getPublicProfile(targetUserId)
       setProfile({
-        fullName: `${data.user.first_name} ${data.user.last_name}`,
-        role: data.user.role,
-        location: data.user.zone_impliquee,
-        avatarUrl: data.user.avatar_url,
-        bio: data.user.bio
+        fullName: data.display_name || data.username,
+        role: '',
+        location: data.location || '',
+        avatarUrl: data.profile_picture_url || '',
+        bio: data.bio || ''
       })
-      setStats([
-        { label: 'Abonnés', value: data.stats.nb_abonnes.toString() },
-        { label: 'Abonnements', value: data.stats.nb_abonnements.toString() }
-      ])
-      setMemberships(
-        data.memberships.map((membership) => ({
-          id: membership.id,
-          title: membership.title,
-          start: membership.start_date,
-          end: membership.end_date
-        }))
-      )
+      setStats([])
+      setMemberships([])
       setInfoItems([
-        { label: 'Prénom', value: data.public_info.first_name },
-        { label: 'Nom', value: data.public_info.last_name },
-        { label: 'Pseudo', value: data.public_info.pseudo }
+        { label: 'Prénom', value: data.display_name || '' },
+        { label: 'Nom', value: '' },
+        { label: 'Pseudo', value: data.username }
       ])
-      setPosts(
-        data.posts.map((post) => ({
-          id: post.id,
-          title: post.titre,
-          excerpt: post.extrait,
-          createdAt: post.created_at,
-          comments: post.nb_commentaires,
-          hasAttachments: post.has_attachments
-        }))
-      )
+      setPosts([])
     }
     loadProfile()
   }, [targetUserId])

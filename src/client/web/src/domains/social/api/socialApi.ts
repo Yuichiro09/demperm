@@ -7,7 +7,6 @@
 import { apiClient } from '../../vote/api/apiClient'
 import type {
   ProfileSelf,
-  PublicProfile,
   ForumHome,
   Community,
   Post,
@@ -16,6 +15,16 @@ import type {
   MessageThread,
   Message,
 } from '../models'
+
+export type SocialUserPublic = {
+  user_id: string
+  username: string
+  display_name?: string
+  profile_picture_url?: string
+  bio?: string
+  location?: string
+  created_at?: string
+}
 
 export class SocialApi {
   // ==================== Profile ====================
@@ -29,11 +38,11 @@ export class SocialApi {
   }
   
   /**
-   * GET /api/profile/:userId
+   * GET /users/:userId/
    * Get public profile of another user
    */
-  async getPublicProfile(userId: string): Promise<PublicProfile> {
-    return apiClient.get<PublicProfile>(`/api/profile/${userId}`)
+  async getPublicProfile(userId: string): Promise<SocialUserPublic> {
+    return apiClient.get<SocialUserPublic>(`/users/${userId}/`)
   }
   
   /**
@@ -178,6 +187,15 @@ export class SocialApi {
    */
   async getMailbox(): Promise<Mailbox> {
     return apiClient.get<Mailbox>('/api/mailbox')
+  }
+
+  /**
+   * GET /users/search/
+   * Search users by username (query)
+   */
+  async searchUsers(query: string, page = 1, pageSize = 20): Promise<SocialUserPublic[]> {
+    const params = apiClient.buildQueryString({ query, page, page_size: pageSize })
+    return apiClient.get<SocialUserPublic[]>(`/users/search/${params}`)
   }
 }
 

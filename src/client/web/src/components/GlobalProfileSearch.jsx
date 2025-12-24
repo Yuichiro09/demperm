@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from './ui/Button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/Card'
 import { Input } from './ui/Input'
-import { users } from '../domains/social/api/mock/temp_data'
+import { socialApi } from '../domains/social/api'
 
 function SearchIcon({ className, ...props }) {
   return (
@@ -67,24 +67,17 @@ export function GlobalProfileSearch() {
   const [hasSearched, setHasSearched] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
   const [results, setResults] = useState([])
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const profiles = useMemo(
-    () =>
-      users.map((user) => ({
-        id: user.id,
-        name: `${user.first_name} ${user.last_name}`,
-        handle: `@${user.pseudo}`,
-        meta: user.zone_impliquee
-      })),
-    []
-  )
-
   async function performSearch(value) {
-    const lowered = value.toLowerCase()
-    return profiles.filter((profile) =>
-      [profile.name, profile.handle, profile.meta].filter(Boolean).some((field) => field.toLowerCase().includes(lowered))
-    )
+    const response = await socialApi.searchUsers(value)
+    return response.map((profile) => ({
+      id: profile.user_id,
+      name: profile.display_name || profile.username,
+      handle: `@${profile.username}`,
+      meta: profile.location
+    }))
   }
 
   const handleSubmit = async (event) => {
@@ -92,6 +85,7 @@ export function GlobalProfileSearch() {
     const trimmed = query.trim()
     setHasSearched(true)
     setIsSearching(true)
+    setError('')
     try {
       if (!trimmed) {
         setResults([])
@@ -99,6 +93,12 @@ export function GlobalProfileSearch() {
       }
       const next = await performSearch(trimmed)
       setResults(next)
+      if (next.length === 0) {
+        setError('Aucun résultat pour cette recherche.')
+      }
+    } catch (searchError) {
+      setResults([])
+      setError(searchError instanceof Error ? searchError.message : 'Erreur lors de la recherche.')
     } finally {
       setIsSearching(false)
     }
@@ -151,6 +151,8 @@ export function GlobalProfileSearch() {
                   </div>
                 ) : isSearching ? (
                   <div className="text-sm text-muted">Recherche…</div>
+                ) : error ? (
+                  <div className="text-sm text-red-500">{error}</div>
                 ) : results.length ? (
                   results.map((profile) => (
                     <ProfileSuggestion
